@@ -6,20 +6,19 @@ import re
 import sys
 import threading
 import time
-import urllib3
 import warnings
+
+import urllib3
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from seleniumbase.config import proxy_list
-from seleniumbase.config import settings
-from seleniumbase.core import download_helper
-from seleniumbase.core import proxy_helper
-from seleniumbase.core import capabilities_parser
-from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
+from seleniumbase.config import proxy_list, settings
+from seleniumbase.core import (capabilities_parser, download_helper,
+                               proxy_helper)
+from seleniumbase.fixtures import constants, page_utils
+
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
@@ -610,15 +609,10 @@ def get_local_driver(
                             print("\nWarning: Could not install geckodriver: "
                                   "%s" % e)
                         sys.argv = sys_args  # Put back the original sys args
-                if "linux" in PLATFORM or not headless:
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities)
-                else:
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities,
-                        options=options)
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile,
+                    capabilities=firefox_capabilities,
+                    options=options)
             except Exception:
                 profile = _create_firefox_profile(
                     downloads_path, proxy_string, user_agent, disable_csp)
@@ -629,7 +623,7 @@ def get_local_driver(
             return firefox_driver
         except Exception as e:
             if headless:
-                raise Exception(e)
+                raise
             return webdriver.Firefox()
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
@@ -680,7 +674,7 @@ def get_local_driver(
                                     options=chrome_options)
         except Exception as e:
             if headless:
-                raise Exception(e)
+                raise
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_EDGEDRIVER)
@@ -747,7 +741,7 @@ def get_local_driver(
                     return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
-                raise Exception(e)
+                raise
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)

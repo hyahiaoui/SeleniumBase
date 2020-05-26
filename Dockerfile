@@ -1,22 +1,17 @@
-# SeleniumBase Docker Image
-FROM ubuntu:18.04
-
-#=======================================
-# Install Python and Basic Python Tools
-#=======================================
-RUN apt-get update && apt-get install -y python python-pip python-setuptools python-dev python-distribute
+# Use Python 3.7 base image
+FROM python:3.7-buster
 
 #=================================
 # Install Bash Command Line Tools
 #=================================
-RUN apt-get -qy --no-install-recommends install \
-    sudo \
-    unzip \
-    wget \
+RUN apt-get update \
+  && apt-get -qy --no-install-recommends install \
     curl \
-    libxi6 \
     libgconf-2-4 \
+    libxi6 \
+    unzip \
     vim \
+    wget \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
 
@@ -71,8 +66,8 @@ RUN pip install --upgrade setuptools
 RUN pip install --upgrade setuptools-scm
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && python setup.py develop
-RUN seleniumbase install chromedriver
-RUN seleniumbase install geckodriver
+RUN seleniumbase install chromedriver latest
+RUN seleniumbase install geckodriver  latest
 
 #==========================================
 # Create entrypoint and grab example tests
