@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class CasDeBase(BaseCase):
-
     def ouvrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -376,7 +375,6 @@ class CasDeBase(BaseCase):
 
 
 class MasterQA_Français(MasterQA, CasDeBase):
-
     def vérifier(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Vérification manuelle"

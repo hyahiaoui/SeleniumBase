@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_alerts(self):
         self.open("about:blank")
         self.execute_script('window.alert("ALERT!!!")')

@@ -8,16 +8,17 @@ from seleniumbase.config import settings
 from seleniumbase.core import settings_parser
 
 
-class DatabaseManager():
+class DatabaseManager:
     """
     This class wraps MySQL database methods for easy use.
     """
 
-    def __init__(self, database_env='test', conf_creds=None):
+    def __init__(self, database_env="test", conf_creds=None):
         """
         Create a connection to the MySQL DB.
         """
         import pymysql
+
         db_server = settings.DB_HOST
         db_port = settings.DB_PORT
         db_user = settings.DB_USERNAME
@@ -26,25 +27,23 @@ class DatabaseManager():
         if hasattr(sb_config, "settings_file") and sb_config.settings_file:
             override = settings_parser.set_settings(sb_config.settings_file)
             if "DB_HOST" in override.keys():
-                db_server = override['DB_HOST']
+                db_server = override["DB_HOST"]
             if "DB_PORT" in override.keys():
-                db_port = override['DB_PORT']
+                db_port = override["DB_PORT"]
             if "DB_USERNAME" in override.keys():
-                db_user = override['DB_USERNAME']
+                db_user = override["DB_USERNAME"]
             if "DB_PASSWORD" in override.keys():
-                db_pass = override['DB_PASSWORD']
+                db_pass = override["DB_PASSWORD"]
             if "DB_SCHEMA" in override.keys():
-                db_schema = override['DB_SCHEMA']
+                db_schema = override["DB_SCHEMA"]
         retry_count = 3
         backoff = 1.2  # Time to wait (in seconds) between retries.
         count = 0
         while count < retry_count:
             try:
-                self.conn = pymysql.connect(host=db_server,
-                                            port=db_port,
-                                            user=db_user,
-                                            passwd=db_pass,
-                                            db=db_schema)
+                self.conn = pymysql.connect(
+                    host=db_server, port=db_port, user=db_user, passwd=db_pass, db=db_schema,
+                )
                 self.conn.autocommit(True)
                 self.cursor = self.conn.cursor()
                 return

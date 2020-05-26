@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 硒测试用例(BaseCase):  # noqa
-
     def 开启(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -376,7 +375,6 @@ class 硒测试用例(BaseCase):  # noqa
 
 
 class MasterQA_中文(MasterQA, 硒测试用例):
-
     def 校验(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "手动检查"

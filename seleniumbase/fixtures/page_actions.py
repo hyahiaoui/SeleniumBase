@@ -37,6 +37,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils
+
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
@@ -141,9 +142,14 @@ def timeout_exception(exception, message):
     raise Exception(message)
 
 
-def hover_and_click(driver, hover_selector, click_selector,
-                    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
-                    timeout=settings.SMALL_TIMEOUT):
+def hover_and_click(
+    driver,
+    hover_selector,
+    click_selector,
+    hover_by=By.CSS_SELECTOR,
+    click_by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT,
+):
     """
     Fires the hover event for a specified element by a given selector, then
     clicks on another element specified. Useful for dropdown hover based menus.
@@ -173,15 +179,13 @@ def hover_and_click(driver, hover_selector, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Element {%s} was not present after %s second%s!"
-        "" % (click_selector, timeout, plural))
+    message = "Element {%s} was not present after %s second%s!" "" % (click_selector, timeout, plural,)
     timeout_exception(NoSuchElementException, message)
 
 
-def hover_element_and_click(driver, element, click_selector,
-                            click_by=By.CSS_SELECTOR,
-                            timeout=settings.SMALL_TIMEOUT):
+def hover_element_and_click(
+    driver, element, click_selector, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT,
+):
     """
     Similar to hover_and_click(), but assumes top element is already found.
     """
@@ -202,15 +206,13 @@ def hover_element_and_click(driver, element, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Element {%s} was not present after %s second%s!"
-        "" % (click_selector, timeout, plural))
+    message = "Element {%s} was not present after %s second%s!" "" % (click_selector, timeout, plural,)
     timeout_exception(NoSuchElementException, message)
 
 
-def hover_element_and_double_click(driver, element, click_selector,
-                                   click_by=By.CSS_SELECTOR,
-                                   timeout=settings.SMALL_TIMEOUT):
+def hover_element_and_double_click(
+    driver, element, click_selector, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT,
+):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     hover = ActionChains(driver).move_to_element(element)
@@ -231,14 +233,11 @@ def hover_element_and_double_click(driver, element, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Element {%s} was not present after %s second%s!"
-        "" % (click_selector, timeout, plural))
+    message = "Element {%s} was not present after %s second%s!" "" % (click_selector, timeout, plural,)
     timeout_exception(NoSuchElementException, message)
 
 
-def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the element is present on the page. The element can be
@@ -269,14 +268,11 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        message = (
-            "Element {%s} was not present after %s second%s!"
-            "" % (selector, timeout, plural))
+        message = "Element {%s} was not present after %s second%s!" "" % (selector, timeout, plural,)
         timeout_exception(NoSuchElementException, message)
 
 
-def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the element is present and visible on the page.
@@ -312,19 +308,14 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element and by != By.LINK_TEXT:
-        message = (
-            "Element {%s} was not visible after %s second%s!"
-            "" % (selector, timeout, plural))
+        message = "Element {%s} was not visible after %s second%s!" "" % (selector, timeout, plural,)
         timeout_exception(ElementNotVisibleException, message)
     if not element and by == By.LINK_TEXT:
-        message = (
-            "Link text {%s} was not visible after %s second%s!"
-            "" % (selector, timeout, plural))
+        message = "Link text {%s} was not visible after %s second%s!" "" % (selector, timeout, plural,)
         timeout_exception(ElementNotVisibleException, message)
 
 
-def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
-                          timeout=settings.LARGE_TIMEOUT):
+def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the text is present in the element and visible
@@ -360,14 +351,16 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        message = (
-            "Expected text {%s} for {%s} was not visible after %s second%s!"
-            "" % (text, selector, timeout, plural))
+        message = "Expected text {%s} for {%s} was not visible after %s second%s!" "" % (
+            text,
+            selector,
+            timeout,
+            plural,
+        )
         timeout_exception(ElementNotVisibleException, message)
 
 
-def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
-                                timeout=settings.LARGE_TIMEOUT):
+def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the text matches exactly with the text in the element,
@@ -404,14 +397,16 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        message = (
-            "Expected exact text {%s} for {%s} was not visible "
-            "after %s second%s!" % (text, selector, timeout, plural))
+        message = "Expected exact text {%s} for {%s} was not visible " "after %s second%s!" % (
+            text,
+            selector,
+            timeout,
+            plural,
+        )
         timeout_exception(ElementNotVisibleException, message)
 
 
-def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
-                            timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector.
     Raises an exception if the element is still present after the
@@ -437,14 +432,11 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Element {%s} was still present after %s second%s!"
-        "" % (selector, timeout, plural))
+    message = "Element {%s} was still present after %s second%s!" "" % (selector, timeout, plural,)
     timeout_exception(Exception, message)
 
 
-def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
-                                 timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector.
     Raises an exception if the element is still visible after the
@@ -473,14 +465,11 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Element {%s} was still visible after %s second%s!"
-        "" % (selector, timeout, plural))
+    message = "Element {%s} was still visible after %s second%s!" "" % (selector, timeout, plural,)
     timeout_exception(Exception, message)
 
 
-def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
-                              timeout=settings.LARGE_TIMEOUT):
+def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the text in the element of the given selector on the page.
     Returns True if the text is not visible on the page within the timeout.
@@ -507,9 +496,7 @@ def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Text {%s} in {%s} was still visible after %s "
-        "second%s!" % (text, selector, timeout, plural))
+    message = "Text {%s} in {%s} was still visible after %s " "second%s!" % (text, selector, timeout, plural,)
     timeout_exception(Exception, message)
 
 
@@ -545,7 +532,7 @@ def save_screenshot(driver, name, folder=None):
     if not name.endswith(".png"):
         name = name + ".png"
     if folder:
-        abs_path = os.path.abspath('.')
+        abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -575,7 +562,7 @@ def save_page_source(driver, name, folder=None):
     if not name.endswith(".html"):
         name = name + ".html"
     if folder:
-        abs_path = os.path.abspath('.')
+        abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -584,8 +571,7 @@ def save_page_source(driver, name, folder=None):
         html_file_path = name
     page_source = driver.page_source
     html_file = codecs.open(html_file_path, "w+", "utf-8")
-    rendered_source = log_helper.get_html_source_with_base_href(
-        driver, page_source)
+    rendered_source = log_helper.get_html_source_with_base_href(driver, page_source)
     html_file.write(rendered_source)
     html_file.close()
 
@@ -594,9 +580,9 @@ def _get_last_page(driver):
     try:
         last_page = driver.current_url
     except Exception:
-        last_page = '[WARNING! Browser Not Open!]'
+        last_page = "[WARNING! Browser Not Open!]"
     if len(last_page) < 5:
-        last_page = '[WARNING! Browser Not Open!]'
+        last_page = "[WARNING! Browser Not Open!]"
     return last_page
 
 
@@ -606,7 +592,7 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
     If the folder provided doesn't exist, it will get created.
     """
     if folder:
-        abs_path = os.path.abspath('.')
+        abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -618,10 +604,10 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
     data_to_save.append("Browser: %s " % browser_type)
-    data_to_save.append("Traceback: " + ''.join(
-        traceback.format_exception(sys.exc_info()[0],
-                                   sys.exc_info()[1],
-                                   sys.exc_info()[2])))
+    data_to_save.append(
+        "Traceback: "
+        + "".join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))
+    )
     failure_data_file.writelines("\r\n".join(data_to_save))
     failure_data_file.close()
 
@@ -675,8 +661,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-    message = (
-        "Alert was not present after %s seconds!" % timeout)
+    message = "Alert was not present after %s seconds!" % timeout
     timeout_exception(Exception, message)
 
 
@@ -717,9 +702,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     plural = "s"
     if timeout == 1:
         plural = ""
-    message = (
-        "Frame {%s} was not visible after %s second%s!"
-        "" % (frame, timeout, plural))
+    message = "Frame {%s} was not visible after %s second%s!" "" % (frame, timeout, plural,)
     timeout_exception(Exception, message)
 
 
@@ -749,9 +732,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
         plural = "s"
         if timeout == 1:
             plural = ""
-        message = (
-            "Window {%s} was not present after %s second%s!"
-            "" % (window, timeout, plural))
+        message = "Window {%s} was not present after %s second%s!" "" % (window, timeout, plural,)
         timeout_exception(Exception, message)
     else:
         window_handle = window
@@ -768,7 +749,5 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
         plural = "s"
         if timeout == 1:
             plural = ""
-        message = (
-            "Window {%s} was not present after %s second%s!"
-            "" % (window, timeout, plural))
+        message = "Window {%s} was not present after %s second%s!" "" % (window, timeout, plural,)
         timeout_exception(Exception, message)

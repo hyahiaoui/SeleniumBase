@@ -17,7 +17,7 @@ import sys
 
 
 def invalid_run_command():
-    exp = ("  ** mkdir **\n\n")
+    exp = "  ** mkdir **\n\n"
     exp += "  Usage:\n"
     exp += "          seleniumbase mkdir [DIRECTORY_NAME]\n"
     exp += "  Example:\n"
@@ -29,33 +29,32 @@ def invalid_run_command():
     exp += "          Python boilerplates for setting up customized\n"
     exp += "          test frameworks.\n"
     print("")
-    raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
 
 
 def main():
     num_args = len(sys.argv)
-    if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1].lower() == "seleniumbase") or (
-            sys.argv[0].split('/')[-1].lower() == "sbase") or (
-            sys.argv[0].split('\\')[-1].lower() == "sbase"):
+    if (
+        sys.argv[0].split("/")[-1].lower() == "seleniumbase"
+        or (sys.argv[0].split("\\")[-1].lower() == "seleniumbase")
+        or (sys.argv[0].split("/")[-1].lower() == "sbase")
+        or (sys.argv[0].split("\\")[-1].lower() == "sbase")
+    ):
         if num_args < 3 or num_args > 3:
             invalid_run_command()
     else:
         invalid_run_command()
     dir_name = sys.argv[num_args - 1]
     if len(str(dir_name)) < 2:
-        raise Exception('Directory name length must be at least 2 '
-                        'characters long!')
-    if os.path.exists(os.getcwd() + '/' + dir_name):
-        raise Exception('Directory "%s" already exists '
-                        'in the current path!\n' % dir_name)
+        raise Exception("Directory name length must be at least 2 " "characters long!")
+    if os.path.exists(os.getcwd() + "/" + dir_name):
+        raise Exception('Directory "%s" already exists ' "in the current path!\n" % dir_name)
     else:
         os.mkdir(dir_name)
 
         data = []
         data.append("[pytest]")
-        data.append("addopts = --capture=no --ignore conftest.py "
-                    "-p no:cacheprovider")
+        data.append("addopts = --capture=no --ignore conftest.py " "-p no:cacheprovider")
         data.append("filterwarnings =")
         data.append("    ignore::pytest.PytestWarning")
         data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")
@@ -109,13 +108,11 @@ def main():
         data.append("        self.assert_element('img[alt=\"Python\"]')")
         data.append("        self.click('a[rel=\"license\"]')")
         data.append('        self.assert_text("free to copy and reuse")')
-        data.append('        self.go_back()')
+        data.append("        self.go_back()")
         data.append('        self.click("link=About")')
         data.append('        self.assert_text("xkcd.com", "h2")')
-        data.append('        self.open('
-                    '"://store.xkcd.com/collections/everything")')
-        data.append(
-            '        self.update_text("input.search-input", "xkcd book\\n")')
+        data.append("        self.open(" '"://store.xkcd.com/collections/everything")')
+        data.append('        self.update_text("input.search-input", "xkcd book\\n")')
         data.append('        self.assert_text("xkcd: volume 0", "h3")')
         data.append("")
         file_path = "%s/%s" % (dir_name, "my_first_test.py")
@@ -130,73 +127,54 @@ def main():
         data.append("class MyTestClass(BaseCase):")
         data.append("")
         data.append("    def test_demo_site(self):")
-        data.append('        self.open('
-                    '"https://seleniumbase.io/demo_page.html")')
+        data.append("        self.open(" '"https://seleniumbase.io/demo_page.html")')
         data.append('        self.assert_title("Web Testing Page")')
         data.append('        self.assert_element("tbody#tbodyId")')
         data.append('        self.assert_text("Demo Page", "h1")')
-        data.append('        self.update_text("#myTextInput", '
-                    '"This is Automated")')
-        data.append('        self.update_text("textarea.area1", '
-                    '"Testing Time!\\n")')
-        data.append("        self.update_text('[name=\"preText2\"]', "
-                    "\"Typing Text!\")")
+        data.append('        self.update_text("#myTextInput", ' '"This is Automated")')
+        data.append('        self.update_text("textarea.area1", ' '"Testing Time!\\n")')
+        data.append("        self.update_text('[name=\"preText2\"]', " '"Typing Text!")')
         data.append('        self.assert_text("Automation Practice", "h3")')
-        data.append('        self.hover_and_click("#myDropdown", '
-                    '"#dropOption2")')
+        data.append('        self.hover_and_click("#myDropdown", ' '"#dropOption2")')
         data.append('        self.assert_text("Link Two Selected", "h3")')
         data.append('        self.assert_text("This Text is Green", "#pText")')
         data.append('        self.click("#myButton")')
-        data.append('        self.assert_text("This Text is Purple", '
-                    '"#pText")')
+        data.append('        self.assert_text("This Text is Purple", ' '"#pText")')
         data.append("        self.assert_element('svg[name=\"svgName\"]')")
         data.append("        self.assert_element('progress[value=\"50\"]')")
         data.append('        self.press_right_arrow("#myslider", times=5)')
         data.append("        self.assert_element('progress[value=\"100\"]')")
         data.append("        self.assert_element('meter[value=\"0.25\"]')")
-        data.append('        self.select_option_by_text("#mySelect", '
-                    '"Set to 75%")')
+        data.append('        self.select_option_by_text("#mySelect", ' '"Set to 75%")')
         data.append("        self.assert_element('meter[value=\"0.75\"]')")
-        data.append('        self.assert_false(self.is_element_visible('
-                    '"img"))')
+        data.append("        self.assert_false(self.is_element_visible(" '"img"))')
         data.append('        self.switch_to_frame("#myFrame1")')
         data.append('        self.assert_true(self.is_element_visible("img"))')
-        data.append('        self.switch_to_default_content()')
-        data.append('        self.assert_false(self.is_text_visible('
-                    '"iFrame Text"))')
+        data.append("        self.switch_to_default_content()")
+        data.append("        self.assert_false(self.is_text_visible(" '"iFrame Text"))')
         data.append('        self.switch_to_frame("#myFrame2")')
-        data.append('        self.assert_true(self.is_text_visible('
-                    '"iFrame Text"))')
-        data.append('        self.switch_to_default_content()')
-        data.append('        self.assert_false(self.is_selected('
-                    '"#radioButton2"))')
+        data.append("        self.assert_true(self.is_text_visible(" '"iFrame Text"))')
+        data.append("        self.switch_to_default_content()")
+        data.append("        self.assert_false(self.is_selected(" '"#radioButton2"))')
         data.append('        self.click("#radioButton2")')
-        data.append('        self.assert_true(self.is_selected('
-                    '"#radioButton2"))')
-        data.append('        self.assert_false(self.is_selected('
-                    '"#checkBox1"))')
+        data.append("        self.assert_true(self.is_selected(" '"#radioButton2"))')
+        data.append("        self.assert_false(self.is_selected(" '"#checkBox1"))')
         data.append('        self.click("#checkBox1")')
         data.append('        self.assert_true(self.is_selected("#checkBox1"))')
-        data.append('        self.assert_false(self.is_selected('
-                    '"#checkBox2"))')
-        data.append('        self.assert_false(self.is_selected('
-                    '"#checkBox3"))')
-        data.append('        self.assert_false(self.is_selected('
-                    '"#checkBox4"))')
-        data.append('        self.click_visible_elements('
-                    '"input.checkBoxClassB")')
+        data.append("        self.assert_false(self.is_selected(" '"#checkBox2"))')
+        data.append("        self.assert_false(self.is_selected(" '"#checkBox3"))')
+        data.append("        self.assert_false(self.is_selected(" '"#checkBox4"))')
+        data.append("        self.click_visible_elements(" '"input.checkBoxClassB")')
         data.append('        self.assert_true(self.is_selected("#checkBox2"))')
         data.append('        self.assert_true(self.is_selected("#checkBox3"))')
         data.append('        self.assert_true(self.is_selected("#checkBox4"))')
-        data.append('        self.assert_false(self.is_element_visible('
-                    '".fBox"))')
+        data.append("        self.assert_false(self.is_element_visible(" '".fBox"))')
         data.append('        self.switch_to_frame("#myFrame3")')
-        data.append('        self.assert_true(self.is_element_visible('
-                    '".fBox"))')
+        data.append("        self.assert_true(self.is_element_visible(" '".fBox"))')
         data.append('        self.assert_false(self.is_selected(".fBox"))')
         data.append('        self.click(".fBox")')
         data.append('        self.assert_true(self.is_selected(".fBox"))')
-        data.append('        self.switch_to_default_content()')
+        data.append("        self.switch_to_default_content()")
         data.append('        self.assert_link_text("seleniumbase.com")')
         data.append('        self.assert_link_text("SeleniumBase on GitHub")')
         data.append('        self.assert_link_text("seleniumbase.io")')
@@ -220,11 +198,9 @@ def main():
         data.append('        ["wikipedia", "wikipedia.org"],')
         data.append('        ["seleniumbase", "seleniumbase/SeleniumBase"],')
         data.append("    ])")
-        data.append("    def test_parameterized_google_search("
-                    "self, search_term, expected_text):")
+        data.append("    def test_parameterized_google_search(" "self, search_term, expected_text):")
         data.append("        self.open('https://google.com/ncr')")
-        data.append("        self.update_text('input[title=\"Search\"]', "
-                    "search_term + '\\n')")
+        data.append("        self.update_text('input[title=\"Search\"]', " "search_term + '\\n')")
         data.append("        self.assert_element('#result-stats')")
         data.append("        self.assert_text(expected_text, '#search')")
         data.append("")
@@ -316,16 +292,12 @@ def main():
         data.append("")
         data.append("    def test_google_dot_com(self):")
         data.append("        self.open('https://google.com/ncr')")
-        data.append(
-            "        self.update_text(HomePage.search_box, 'github')")
+        data.append("        self.update_text(HomePage.search_box, 'github')")
         data.append("        self.assert_element(HomePage.list_box)")
         data.append("        self.assert_element(HomePage.search_button)")
-        data.append(
-            "        self.assert_element(HomePage.feeling_lucky_button)")
+        data.append("        self.assert_element(HomePage.feeling_lucky_button)")
         data.append("        self.click(HomePage.search_button)")
-        data.append(
-            "        self.assert_text('github.com', "
-            "ResultsPage.search_results)")
+        data.append("        self.assert_text('github.com', " "ResultsPage.search_results)")
         data.append("        self.assert_element(ResultsPage.images_link)")
         data.append("")
         file_path = "%s/%s" % (dir_name_3, "google_test.py")
@@ -339,9 +311,7 @@ def main():
         data.append("    search_box = 'input[title=\"Search\"]'")
         data.append("    list_box = '[role=\"listbox\"]'")
         data.append("    search_button = 'input[value=\"Google Search\"]'")
-        data.append(
-            "    feeling_lucky_button = "
-            "'''input[value=\"I'm Feeling Lucky\"]'''")
+        data.append("    feeling_lucky_button = " "'''input[value=\"I'm Feeling Lucky\"]'''")
         data.append("")
         data.append("")
         data.append("class ResultsPage(object):")
@@ -353,8 +323,7 @@ def main():
         file = codecs.open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))
         file.close()
-        print('''\n* Directory "%s" was created with config files '''
-              '''and sample tests! *\n''' % dir_name)
+        print("""\n* Directory "%s" was created with config files """ """and sample tests! *\n""" % dir_name)
 
 
 if __name__ == "__main__":

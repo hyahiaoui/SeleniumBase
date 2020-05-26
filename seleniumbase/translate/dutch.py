@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class Testgeval(BaseCase):
-
     def openen(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -376,7 +375,6 @@ class Testgeval(BaseCase):
 
 
 class MasterQA_Nederlands(MasterQA, Testgeval):
-
     def controleren(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Handmatige controle"

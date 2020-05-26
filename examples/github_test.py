@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class GitHubTests(BaseCase):
-
     def test_github(self):
         # Selenium can trigger GitHub's anti-automation system:
         # "You have triggered an abuse detection mechanism."
@@ -15,8 +14,9 @@ class GitHubTests(BaseCase):
             self.driver.quit()
             self.get_new_driver(
                 agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) """
-                      """AppleWebKit/537.36 (KHTML, like Gecko) """
-                      """Chrome/75.0.3770.100 Safari/537.36""")
+                """AppleWebKit/537.36 (KHTML, like Gecko) """
+                """Chrome/75.0.3770.100 Safari/537.36"""
+            )
         self.open("https://github.com/")
         self.update_text("input.header-search-input", "SeleniumBase\n")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')

@@ -31,7 +31,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
             # Bug fix for: [Permission denied to access property "document"]
             time.sleep(0.03)
             return True
-        if ready_state == u'complete':
+        if ready_state == u"complete":
             time.sleep(0.01)  # Better be sure everything is done loading
             return True
         else:
@@ -39,8 +39,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-    raise Exception(
-        "Page elements never fully loaded after %s seconds!" % timeout)
+    raise Exception("Page elements never fully loaded after %s seconds!" % timeout)
 
 
 def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
@@ -52,25 +51,25 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
     if not settings.WAIT_FOR_ANGULARJS:
         return
 
-    NG_WRAPPER = '%(prefix)s' \
-                 'var $elm=document.querySelector(' \
-                 '\'[data-ng-app],[ng-app],.ng-scope\')||document;' \
-                 'if(window.angular && angular.getTestability){' \
-                 'angular.getTestability($elm).whenStable(%(handler)s)' \
-                 '}else{' \
-                 'var $inj;try{$inj=angular.element($elm).injector()||' \
-                 'angular.injector([\'ng\'])}catch(ex){' \
-                 '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||' \
-                 '$inj;$inj.get(\'$browser\').' \
-                 'notifyWhenNoOutstandingRequests(%(handler)s)}' \
-                 '%(suffix)s'
-    def_pre = 'var cb=arguments[arguments.length-1];if(window.angular){'
-    prefix = kwargs.pop('prefix', def_pre)
-    handler = kwargs.pop('handler', 'function(){cb(true)}')
-    suffix = kwargs.pop('suffix', '}else{cb(false)}')
-    script = NG_WRAPPER % {'prefix': prefix,
-                           'handler': handler,
-                           'suffix': suffix}
+    NG_WRAPPER = (
+        "%(prefix)s"
+        "var $elm=document.querySelector("
+        "'[data-ng-app],[ng-app],.ng-scope')||document;"
+        "if(window.angular && angular.getTestability){"
+        "angular.getTestability($elm).whenStable(%(handler)s)"
+        "}else{"
+        "var $inj;try{$inj=angular.element($elm).injector()||"
+        "angular.injector(['ng'])}catch(ex){"
+        "$inj=angular.injector(['ng'])};$inj.get=$inj.get||"
+        "$inj;$inj.get('$browser')."
+        "notifyWhenNoOutstandingRequests(%(handler)s)}"
+        "%(suffix)s"
+    )
+    def_pre = "var cb=arguments[arguments.length-1];if(window.angular){"
+    prefix = kwargs.pop("prefix", def_pre)
+    handler = kwargs.pop("handler", "function(){cb(true)}")
+    suffix = kwargs.pop("suffix", "}else{cb(false)}")
+    script = NG_WRAPPER % {"prefix": prefix, "handler": handler, "suffix": suffix}
     try:
         execute_async_script(driver, script, timeout=timeout)
     except Exception:
@@ -112,10 +111,11 @@ def wait_for_jquery_active(driver, timeout=None):
 def raise_unable_to_load_jquery_exception(driver):
     """ The most-likely reason for jQuery not loading on web pages. """
     raise Exception(
-        '''Unable to load jQuery on "%s" due to a possible violation '''
-        '''of the website's Content Security Policy directive. '''
-        '''To override this policy, add "--disable-csp" on the '''
-        '''command-line when running your tests.''' % driver.current_url)
+        """Unable to load jQuery on "%s" due to a possible violation """
+        """of the website's Content Security Policy directive. """
+        """To override this policy, add "--disable-csp" on the """
+        """command-line when running your tests.""" % driver.current_url
+    )
 
 
 def activate_jquery(driver):
@@ -131,9 +131,10 @@ def activate_jquery(driver):
         pass
     jquery_js = constants.JQuery.MIN_JS
     activate_jquery_script = (
-        '''var script = document.createElement('script');'''
-        '''script.src = "%s";document.getElementsByTagName('head')[0]'''
-        '''.appendChild(script);''' % jquery_js)
+        """var script = document.createElement('script');"""
+        """script.src = "%s";document.getElementsByTagName('head')[0]"""
+        """.appendChild(script);""" % jquery_js
+    )
     driver.execute_script(activate_jquery_script)
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
         # jQuery needs a small amount of time to activate.
@@ -147,8 +148,7 @@ def activate_jquery(driver):
 
 
 def are_quotes_escaped(string):
-    if (string.count("\\'") != string.count("'") or (
-            string.count('\\"') != string.count('"'))):
+    if string.count("\\'") != string.count("'") or (string.count('\\"') != string.count('"')):
         return True
     return False
 
@@ -189,8 +189,7 @@ def safe_execute_script(driver, script):
         driver.execute_script(script)
 
 
-def wait_for_css_query_selector(
-        driver, selector, timeout=settings.SMALL_TIMEOUT):
+def wait_for_css_query_selector(driver, selector, timeout=settings.SMALL_TIMEOUT):
     element = None
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -198,8 +197,7 @@ def wait_for_css_query_selector(
         try:
             selector = re.escape(selector)
             selector = escape_quotes_if_needed(selector)
-            element = driver.execute_script(
-                """return document.querySelector('%s')""" % selector)
+            element = driver.execute_script("""return document.querySelector('%s')""" % selector)
             if element:
                 return element
         except Exception:
@@ -210,80 +208,115 @@ def wait_for_css_query_selector(
                 break
             time.sleep(0.1)
 
-    raise Exception(
-        "Element {%s} was not present after %s seconds!" % (
-            selector, timeout))
+    raise Exception("Element {%s} was not present after %s seconds!" % (selector, timeout))
 
 
 def highlight_with_js(driver, selector, loops, o_bs):
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     for n in range(loops):
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style.boxShadow =
+        script = (
+            """document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-                  % selector)
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style.boxShadow =
-              '%s';"""
-              % (selector, o_bs))
+    script = """document.querySelector('%s').style.boxShadow =
+              '%s';""" % (
+        selector,
+        o_bs,
+    )
     driver.execute_script(script)
 
 
 def highlight_with_jquery(driver, selector, loops, o_bs):
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
+        % selector
+    )
     safe_execute_script(driver, script)
     for n in range(loops):
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(255, 0, 0, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(0, 0, 255, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(0, 0, 255, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(0, 255, 0, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(0, 255, 0, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 128, 0, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 128, 0, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+        script = (
+            """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
+            % selector
+        )
         driver.execute_script(script)
         time.sleep(0.0181)
     script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
@@ -291,8 +324,7 @@ def highlight_with_jquery(driver, selector, loops, o_bs):
 
 
 def add_css_link(driver, css_link):
-    script_to_add_css = (
-        """function injectCSS(css) {
+    script_to_add_css = """function injectCSS(css) {
               var head = document.getElementsByTagName("head")[0];
               var link = document.createElement("link");
               link.rel = "stylesheet";
@@ -301,14 +333,13 @@ def add_css_link(driver, css_link):
               link.crossorigin = "anonymous";
               head.appendChild(link);
            }
-           injectCSS("%s");""")
+           injectCSS("%s");"""
     css_link = escape_quotes_if_needed(css_link)
     driver.execute_script(script_to_add_css % css_link)
 
 
 def add_js_link(driver, js_link):
-    script_to_add_js = (
-        """function injectJS(link) {
+    script_to_add_js = """function injectJS(link) {
               var body = document.getElementsByTagName("body")[0];
               var script = document.createElement("script");
               script.src = link;
@@ -318,22 +349,21 @@ def add_js_link(driver, js_link):
               script.onload = function() { null };
               body.appendChild(script);
            }
-           injectJS("%s");""")
+           injectJS("%s");"""
     js_link = escape_quotes_if_needed(js_link)
     driver.execute_script(script_to_add_js % js_link)
 
 
 def add_css_style(driver, css_style):
-    add_css_style_script = (
-        """function injectStyle(css) {
+    add_css_style_script = """function injectStyle(css) {
               var head = document.getElementsByTagName("head")[0];
               var style = document.createElement("style");
               style.type = "text/css";
               style.appendChild(document.createTextNode(css));
               head.appendChild(style);
            }
-           injectStyle("%s");""")
-    css_style = css_style.replace('\n', '')
+           injectStyle("%s");"""
+    css_style = css_style.replace("\n", "")
     css_style = escape_quotes_if_needed(css_style)
     driver.execute_script(add_css_style_script % css_style)
 
@@ -343,26 +373,28 @@ def add_js_code_from_link(driver, js_link):
         js_link = "http:" + js_link
     js_code = requests.get(js_link).text
     add_js_code_script = (
-        '''var body = document.getElementsByTagName('body').item(0);'''
-        '''var script = document.createElement("script");'''
-        '''script.type = "text/javascript";'''
-        '''script.onload = function() { null };'''
-        '''script.appendChild(document.createTextNode("%s"));'''
-        '''body.appendChild(script);''')
-    js_code = js_code.replace('\n', ' ')
+        """var body = document.getElementsByTagName('body').item(0);"""
+        """var script = document.createElement("script");"""
+        """script.type = "text/javascript";"""
+        """script.onload = function() { null };"""
+        """script.appendChild(document.createTextNode("%s"));"""
+        """body.appendChild(script);"""
+    )
+    js_code = js_code.replace("\n", " ")
     js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
 
 
 def add_js_code(driver, js_code):
     add_js_code_script = (
-        '''var body = document.getElementsByTagName('body').item(0);'''
-        '''var script = document.createElement("script");'''
-        '''script.type = "text/javascript";'''
-        '''script.onload = function() { null };'''
-        '''script.appendChild(document.createTextNode("%s"));'''
-        '''body.appendChild(script);''')
-    js_code = js_code.replace('\n', ' ')
+        """var body = document.getElementsByTagName('body').item(0);"""
+        """var script = document.createElement("script");"""
+        """script.type = "text/javascript";"""
+        """script.onload = function() { null };"""
+        """script.appendChild(document.createTextNode("%s"));"""
+        """body.appendChild(script);"""
+    )
+    js_code = js_code.replace("\n", " ")
     js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
 
@@ -371,16 +403,20 @@ def add_meta_tag(driver, http_equiv=None, content=None):
     if http_equiv is None:
         http_equiv = "Content-Security-Policy"
     if content is None:
-        content = ("default-src *; style-src 'self' 'unsafe-inline'; "
-                   "script-src: 'self' 'unsafe-inline' 'unsafe-eval'")
-    script_to_add_meta = (
-        """function injectMeta() {
+        content = (
+            "default-src *; style-src 'self' 'unsafe-inline'; "
+            "script-src: 'self' 'unsafe-inline' 'unsafe-eval'"
+        )
+    script_to_add_meta = """function injectMeta() {
            var meta = document.createElement('meta');
            meta.httpEquiv = "%s";
            meta.content = "%s";
            document.getElementsByTagName('head')[0].appendChild(meta);
         }
-        injectMeta();""" % (http_equiv, content))
+        injectMeta();""" % (
+        http_equiv,
+        content,
+    )
     driver.execute_script(script_to_add_meta)
 
 
@@ -457,10 +493,12 @@ def activate_messenger(driver):
     underscore_js = constants.Underscore.MIN_JS
     backbone_js = constants.Backbone.MIN_JS
 
-    msg_style = ("Messenger.options = {'maxMessages': 8, "
-                 "extraClasses: 'messenger-fixed "
-                 "messenger-on-bottom messenger-on-right', "
-                 "theme: 'future'}")
+    msg_style = (
+        "Messenger.options = {'maxMessages': 8, "
+        "extraClasses: 'messenger-fixed "
+        "messenger-on-bottom messenger-on-right', "
+        "theme: 'future'}"
+    )
 
     add_js_link(driver, jquery_js)
     wait_for_jquery_active(driver, timeout=0.2)
@@ -489,8 +527,7 @@ def activate_messenger(driver):
             time.sleep(0.1)
 
 
-def set_messenger_theme(driver, theme="default", location="default",
-                        max_messages="default"):
+def set_messenger_theme(driver, theme="default", location="default", max_messages="default"):
     if theme == "default":
         theme = "future"
     if location == "default":
@@ -498,31 +535,36 @@ def set_messenger_theme(driver, theme="default", location="default",
     if max_messages == "default":
         max_messages = "8"
 
-    valid_themes = ['flat', 'future', 'block', 'air', 'ice']
+    valid_themes = ["flat", "future", "block", "air", "ice"]
     if theme not in valid_themes:
         raise Exception("Theme: %s is not in %s!" % (theme, valid_themes))
-    valid_locations = (['top_left', 'top_center', 'top_right'
-                        'bottom_left', 'bottom_center', 'bottom_right'])
+    valid_locations = [
+        "top_left",
+        "top_center",
+        "top_right" "bottom_left",
+        "bottom_center",
+        "bottom_right",
+    ]
     if location not in valid_locations:
-        raise Exception(
-            "Location: %s is not in %s!" % (location, valid_locations))
+        raise Exception("Location: %s is not in %s!" % (location, valid_locations))
 
-    if location == 'top_left':
+    if location == "top_left":
         messenger_location = "messenger-on-top messenger-on-left"
-    elif location == 'top_center':
+    elif location == "top_center":
         messenger_location = "messenger-on-top"
-    elif location == 'top_right':
+    elif location == "top_right":
         messenger_location = "messenger-on-top messenger-on-right"
-    elif location == 'bottom_left':
+    elif location == "bottom_left":
         messenger_location = "messenger-on-bottom messenger-on-left"
-    elif location == 'bottom_center':
+    elif location == "bottom_center":
         messenger_location = "messenger-on-bottom"
-    elif location == 'bottom_right':
+    elif location == "bottom_right":
         messenger_location = "messenger-on-bottom messenger-on-right"
 
-    msg_style = ("Messenger.options = {'maxMessages': %s, "
-                 "extraClasses: 'messenger-fixed %s', theme: '%s'}"
-                 % (max_messages, messenger_location, theme))
+    msg_style = (
+        "Messenger.options = {'maxMessages': %s, "
+        "extraClasses: 'messenger-fixed %s', theme: '%s'}" % (max_messages, messenger_location, theme)
+    )
     try:
         driver.execute_script(msg_style)
     except Exception:
@@ -539,9 +581,10 @@ def post_message(driver, message, msg_dur, style="info"):
     msg_dur = float(msg_dur)
     message = re.escape(message)
     message = escape_quotes_if_needed(message)
-    messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
-                        '''hideAfter: %s, hideOnNavigate: true});'''
-                        % (message, style, msg_dur))
+    messenger_script = (
+        """Messenger().post({message: "%s", type: "%s", """
+        """hideAfter: %s, hideOnNavigate: true});""" % (message, style, msg_dur)
+    )
     try:
         driver.execute_script(messenger_script)
     except Exception:
@@ -569,8 +612,7 @@ def post_messenger_success_message(driver, message, msg_dur):
             theme = "block"
             location = "top_center"
         set_messenger_theme(driver, theme=theme, location=location)
-        post_message(
-            driver, message, msg_dur, style="success")
+        post_message(driver, message, msg_dur, style="success")
         time.sleep(msg_dur + 0.07)
     except Exception:
         pass
@@ -582,8 +624,7 @@ def post_messenger_error_message(driver, message, msg_dur):
     msg_dur = float(msg_dur)
     try:
         set_messenger_theme(driver, theme="block", location="top_center")
-        post_message(
-            driver, message, msg_dur, style="error")
+        post_message(driver, message, msg_dur, style="error")
         time.sleep(msg_dur + 0.07)
     except Exception:
         pass
@@ -592,60 +633,88 @@ def post_messenger_error_message(driver, message, msg_dur):
 def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     if selector == "html":
         selector = "body"
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style.boxShadow =
+    script = (
+        """document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
-              % selector)
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
 
     post_messenger_success_message(driver, message, msg_dur)
 
-    script = ("""document.querySelector('%s').style.boxShadow =
-              '%s';""" % (selector, o_bs))
+    script = """document.querySelector('%s').style.boxShadow =
+              '%s';""" % (
+        selector,
+        o_bs,
+    )
     driver.execute_script(script)
 
 
 def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
     if selector == "html":
         selector = "body"
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
+        % selector
+    )
     safe_execute_script(driver, script)
     time.sleep(0.0181)
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(205, 30, 0, 1)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(205, 30, 0, 1)');"""
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(50, 50, 200, 1)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(50, 50, 200, 1)');"""
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = """jQuery('%s').css('box-shadow',
-        '0px 0px 6px 6px rgba(50, 205, 50, 1)');""" % selector
+    script = (
+        """jQuery('%s').css('box-shadow',
+        '0px 0px 6px 6px rgba(50, 205, 50, 1)');"""
+        % selector
+    )
     driver.execute_script(script)
     time.sleep(0.0181)
 
@@ -658,7 +727,7 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
 def scroll_to_element(driver, element):
     element_location = None
     try:
-        element_location = element.location['y']
+        element_location = element.location["y"]
     except Exception:
         # element.location_once_scrolled_into_view  # Old hack
         return False
@@ -676,14 +745,14 @@ def scroll_to_element(driver, element):
 
 
 def slow_scroll_to_element(driver, element, browser):
-    if browser == 'ie':
+    if browser == "ie":
         # IE breaks on slow-scrolling. Do a fast scroll instead.
         scroll_to_element(driver, element)
         return
     scroll_position = driver.execute_script("return window.scrollY;")
     element_location = None
     try:
-        element_location = element.location['y']
+        element_location = element.location["y"]
     except Exception:
         element.location_once_scrolled_into_view
         return
@@ -718,8 +787,8 @@ def _jq_format(code):
     If you just want to escape quotes, there's escape_quotes_if_needed().
     This is similar to "json.dumps(value)", but with one less layer of quotes.
     """
-    code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
-    code = code.replace('\"', '\\\"').replace('\'', '\\\'')
-    code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
-    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
+    code = code.replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n")
+    code = code.replace('"', '\\"').replace("'", "\\'")
+    code = code.replace("\v", "\\v").replace("\a", "\\a").replace("\f", "\\f")
+    code = code.replace("\b", "\\b").replace(r"\u", "\\u").replace("\r", "\\r")
     return code

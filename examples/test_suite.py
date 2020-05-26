@@ -1,11 +1,10 @@
-''' NOTE: This test suite contains 2 passing tests and 2 failing tests. '''
+""" NOTE: This test suite contains 2 passing tests and 2 failing tests. """
 
 import pytest
 from seleniumbase import BaseCase
 
 
 class MyTestSuite(BaseCase):
-
     def test_1(self):
         self.open("https://xkcd.com/1663/")
         self.assert_text("Garden", "div#ctitle", timeout=3)

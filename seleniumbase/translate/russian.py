@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):  # noqa
-
     def открыть(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -376,7 +375,6 @@ class ТестНаСелен(BaseCase):  # noqa
 
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):
-
     def подтвердить(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Ручная проверка"

@@ -15,6 +15,7 @@ class PageSource(Plugin):
     or raises an error. It will store the page source in the
     logs file specified, along with default test information.
     """
+
     name = "page_source"  # Usage: --with-page_source
     logfile_name = settings.PAGE_SOURCE_NAME
 
@@ -38,8 +39,7 @@ class PageSource(Plugin):
             os.makedirs(test_logpath)
         html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
         html_file = codecs.open(html_file_name, "w+", "utf-8")
-        rendered_source = log_helper.get_html_source_with_base_href(
-            test.driver, page_source)
+        rendered_source = log_helper.get_html_source_with_base_href(test.driver, page_source)
         html_file.write(rendered_source)
         html_file.close()
 
@@ -54,7 +54,6 @@ class PageSource(Plugin):
             os.makedirs(test_logpath)
         html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
         html_file = codecs.open(html_file_name, "w+", "utf-8")
-        rendered_source = log_helper.get_html_source_with_base_href(
-            test.driver, page_source)
+        rendered_source = log_helper.get_html_source_with_base_href(test.driver, page_source)
         html_file.write(rendered_source)
         html_file.close()

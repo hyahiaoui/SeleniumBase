@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_basic(self):
         self.open("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")

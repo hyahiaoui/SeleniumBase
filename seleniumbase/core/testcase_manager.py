@@ -2,7 +2,6 @@ from seleniumbase.core.mysql import DatabaseManager
 
 
 class TestcaseManager:
-
     def __init__(self, database_env):
         self.database_env = database_env
 
@@ -16,9 +15,7 @@ class TestcaseManager:
                    (guid, execution_start, total_execution_time, username)
                    VALUES (%(guid)s,%(execution_start_time)s,
                            %(total_execution_time)s,%(username)s)"""
-        DatabaseManager(self.database_env).execute_query(
-            query,
-            execution_query_payload.get_params())
+        DatabaseManager(self.database_env).execute_query(query, execution_query_payload.get_params())
         return execution_query_payload.guid
 
     def update_execution_data(self, execution_guid, execution_time):
@@ -27,9 +24,8 @@ class TestcaseManager:
                    SET total_execution_time=%(execution_time)s
                    WHERE guid=%(execution_guid)s """
         DatabaseManager(self.database_env).execute_query(
-            query,
-            {"execution_guid": execution_guid,
-             "execution_time": execution_time})
+            query, {"execution_guid": execution_guid, "execution_time": execution_time}
+        )
 
     def insert_testcase_data(self, testcase_run_payload):
         """ Inserts all data for the test in the DB. Returns new row guid. """
@@ -48,8 +44,7 @@ class TestcaseManager:
                               %(retry_count)s,
                               %(message)s,
                               %(stack_trace)s) """
-        DatabaseManager(self.database_env).execute_query(
-            query, testcase_run_payload.get_params())
+        DatabaseManager(self.database_env).execute_query(query, testcase_run_payload.get_params())
 
     def update_testcase_data(self, testcase_payload):
         """ Updates an existing test run in the database. """
@@ -60,15 +55,13 @@ class TestcaseManager:
                             stack_trace=%(stack_trace)s,
                             message=%(message)s
                             WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query(
-            query, testcase_payload.get_params())
+        DatabaseManager(self.database_env).execute_query(query, testcase_payload.get_params())
 
     def update_testcase_log_url(self, testcase_payload):
         query = """UPDATE test_run_data
                    SET log_url=%(log_url)s
                    WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query(
-            query, testcase_payload.get_params())
+        DatabaseManager(self.database_env).execute_query(query, testcase_payload.get_params())
 
 
 class ExecutionQueryPayload:
@@ -83,7 +76,7 @@ class ExecutionQueryPayload:
             "execution_start_time": self.execution_start_time,
             "total_execution_time": self.total_execution_time,
             "username": self.username,
-            "guid": self.guid
+            "guid": self.guid,
         }
 
 
@@ -115,5 +108,5 @@ class TestcaseDataPayload:
             "retry_count": self.retry_count,
             "stack_trace": self.stack_trace,
             "message": self.message,
-            "log_url": self.log_url
+            "log_url": self.log_url,
         }

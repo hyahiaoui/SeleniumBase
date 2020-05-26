@@ -37,10 +37,10 @@ from seleniumbase.utilities.selenium_ide import convert_ide
 
 def show_usage():
     show_basic_usage()
-    sc = ("")
-    sc += ('Type "sbase help [COMMAND]" for specific command info.\n')
-    sc += ('For info on all commands, type: "seleniumbase --help".\n')
-    sc += ('* (Use "pytest" for running tests) *\n')
+    sc = ""
+    sc += 'Type "sbase help [COMMAND]" for specific command info.\n'
+    sc += 'For info on all commands, type: "seleniumbase --help".\n'
+    sc += '* (Use "pytest" for running tests) *\n'
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -59,26 +59,26 @@ def show_basic_usage():
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
-    sc = ("")
-    sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
-    sc += ('(short name): "sbase [COMMAND] [PARAMETERS]"\n')
-    sc += ("\n")
-    sc += ("Commands:\n")
-    sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
-    sc += ("      mkdir           [NEW_TEST_DIRECTORY_NAME]\n")
-    sc += ("      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
-    sc += ("      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
-    sc += ("      extract-objects [SB_PYTHON_FILE]\n")
-    sc += ("      inject-objects  [SB_PYTHON_FILE] [OPTIONS]\n")
-    sc += ("      objectify       [SB_PYTHON_FILE] [OPTIONS]\n")
-    sc += ("      revert-objects  [SB_PYTHON_FILE]\n")
-    sc += ("      encrypt         (OR: obfuscate)\n")
-    sc += ("      decrypt         (OR: unobfuscate)\n")
-    sc += ("      download server (Selenium Server JAR file)\n")
-    sc += ("      grid-hub        [start|stop] [OPTIONS]\n")
-    sc += ("      grid-node       [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
-    sc += ('  *  (EXAMPLE: "sbase install chromedriver latest")  *\n')
-    sc += ("")
+    sc = ""
+    sc += 'Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n'
+    sc += '(short name): "sbase [COMMAND] [PARAMETERS]"\n'
+    sc += "\n"
+    sc += "Commands:\n"
+    sc += "      install         [DRIVER_NAME] [OPTIONS]\n"
+    sc += "      mkdir           [NEW_TEST_DIRECTORY_NAME]\n"
+    sc += "      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n"
+    sc += "      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n"
+    sc += "      extract-objects [SB_PYTHON_FILE]\n"
+    sc += "      inject-objects  [SB_PYTHON_FILE] [OPTIONS]\n"
+    sc += "      objectify       [SB_PYTHON_FILE] [OPTIONS]\n"
+    sc += "      revert-objects  [SB_PYTHON_FILE]\n"
+    sc += "      encrypt         (OR: obfuscate)\n"
+    sc += "      decrypt         (OR: unobfuscate)\n"
+    sc += "      download server (Selenium Server JAR file)\n"
+    sc += "      grid-hub        [start|stop] [OPTIONS]\n"
+    sc += "      grid-node       [start|stop] --hub=[HUB_IP] [OPTIONS]\n"
+    sc += '  *  (EXAMPLE: "sbase install chromedriver latest")  *\n'
+    sc += ""
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     cr = colorama.Style.RESET_ALL
@@ -170,7 +170,7 @@ def show_translate_usage():
     print("         Both a language and an action must be specified.")
     print('         The "-p" action can be paired with one other action.')
     print('         When running with "-c" (or "--copy"), the new file name')
-    print('         will be the orginal name appended with an underscore')
+    print("         will be the orginal name appended with an underscore")
     print("         plus the 2-letter language code of the new language.")
     print('         (Example: Translating "test_1.py" into Japanese with')
     print('          "-c" will create a new file called "test_1_ja.py".)')
@@ -201,8 +201,8 @@ def show_inject_objects_usage():
     print("                           (Default: No added comments.)")
     print("  Output:")
     print('           Takes the page objects found in the "page_objects.py"')
-    print('           file and uses those to replace matching selectors in')
-    print('           the selected seleniumbase Python file.')
+    print("           file and uses those to replace matching selectors in")
+    print("           the selected seleniumbase Python file.")
     print("")
 
 
@@ -216,8 +216,8 @@ def show_objectify_usage():
     print("           -c, --comments  (Add object selectors to the comments.)")
     print("                           (Default: No added comments.)")
     print("  Output:")
-    print('           A modified version of the file where the selectors')
-    print('           have been replaced with variable names defined in')
+    print("           A modified version of the file where the selectors")
+    print("           have been replaced with variable names defined in")
     print('           "page_objects.py", supporting the Page Object Pattern.')
     print("")
     print('           (seleniumbase "objectify" has the same outcome as')
@@ -237,7 +237,7 @@ def show_revert_objects_usage():
     print("  Output:")
     print('           Reverts the changes made by "seleniumbase objectify" or')
     print('           "seleniumbase inject-objects" when run against a')
-    print('           seleniumbase Python file. Objects will get replaced by')
+    print("           seleniumbase Python file. Objects will get replaced by")
     print('           selectors stored in the "page_objects.py" file.')
     print("")
 
@@ -322,6 +322,7 @@ def show_grid_node_usage():
 
 def get_version():
     import pkg_resources
+
     version_info = None
     try:
         version_info = pkg_resources.require("seleniumbase")[0:1]
@@ -332,7 +333,7 @@ def get_version():
 
 def show_version_info():
     version = get_version()
-    print('\n%s\n' % version)
+    print("\n%s\n" % version)
 
 
 def show_detailed_help():
@@ -354,7 +355,7 @@ def show_detailed_help():
     show_grid_node_usage()
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    print('* (Use "' + c3 + 'pytest' + cr + '" for running tests) *\n')
+    print('* (Use "' + c3 + "pytest" + cr + '" for running tests) *\n')
 
 
 def main():
@@ -393,6 +394,7 @@ def main():
     elif command == "translate":
         if len(command_args) >= 1:
             from seleniumbase.translate import translator
+
             translator.main()
         else:
             show_basic_usage()

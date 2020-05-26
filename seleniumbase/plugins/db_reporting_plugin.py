@@ -19,7 +19,8 @@ class DBReporting(Plugin):
     """
     This plugin records test results in the Testcase Database.
     """
-    name = 'db_reporting'  # Usage: --with-db_reporting
+
+    name = "db_reporting"  # Usage: --with-db_reporting
 
     def __init__(self):
         Plugin.__init__(self)
@@ -33,20 +34,23 @@ class DBReporting(Plugin):
 
     def options(self, parser, env):
         super(DBReporting, self).options(parser, env=env)
-        parser.add_option('--database_env', '--database-env',
-                          action='store',
-                          dest='database_env',
-                          choices=(
-                              constants.Environment.QA,
-                              constants.Environment.STAGING,
-                              constants.Environment.DEVELOP,
-                              constants.Environment.PRODUCTION,
-                              constants.Environment.MASTER,
-                              constants.Environment.LOCAL,
-                              constants.Environment.TEST
-                          ),
-                          default=constants.Environment.TEST,
-                          help="The database environment to run the tests in.")
+        parser.add_option(
+            "--database_env",
+            "--database-env",
+            action="store",
+            dest="database_env",
+            choices=(
+                constants.Environment.QA,
+                constants.Environment.STAGING,
+                constants.Environment.DEVELOP,
+                constants.Environment.PRODUCTION,
+                constants.Environment.MASTER,
+                constants.Environment.LOCAL,
+                constants.Environment.TEST,
+            ),
+            default=constants.Environment.TEST,
+            help="The database environment to run the tests in.",
+        )
 
     def configure(self, options, conf):
         super(DBReporting, self).configure(options, conf)
@@ -75,8 +79,8 @@ class DBReporting(Plugin):
             data_payload.browser = "N/A"
         data_payload.test_address = test.id()
         application = ApplicationManager.generate_application_string(test)
-        data_payload.env = application.split('.')[0]
-        data_payload.start_time = application.split('.')[1]
+        data_payload.env = application.split(".")[0]
+        data_payload.start_time = application.split(".")[1]
         data_payload.state = constants.State.NOTRUN
         self.testcase_manager.insert_testcase_data(data_payload)
         self.case_start_time = int(time.time() * 1000)
@@ -87,8 +91,7 @@ class DBReporting(Plugin):
         """ At the end of the run, we want to
         update the DB row with the execution time. """
         runtime = int(time.time() * 1000) - self.execution_start_time
-        self.testcase_manager.update_execution_data(self.execution_guid,
-                                                    runtime)
+        self.testcase_manager.update_execution_data(self.execution_guid, runtime)
 
     def addSuccess(self, test, capt):
         """
@@ -139,8 +142,14 @@ class DBReporting(Plugin):
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
         if err is not None:
-            data_payload.message = err[1].__str__().split(
-                '''-------------------- >> '''
-                '''begin captured logging'''
-                ''' << --------------------''', 1)[0]
+            data_payload.message = (
+                err[1]
+                .__str__()
+                .split(
+                    """-------------------- >> """
+                    """begin captured logging"""
+                    """ << --------------------""",
+                    1,
+                )[0]
+            )
         self.testcase_manager.update_testcase_data(data_payload)

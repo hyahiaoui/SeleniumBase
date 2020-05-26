@@ -15,10 +15,10 @@ def get_domain_url(url):
     """
     if not url.startswith("http://") and not url.startswith("https://"):
         return url
-    url_header = url.split('://')[0]
-    simple_url = url.split('://')[1]
-    base_url = simple_url.split('/')[0]
-    domain_url = url_header + '://' + base_url
+    url_header = url.split("://")[0]
+    simple_url = url.split("://")[1]
+    base_url = simple_url.split("/")[0]
+    domain_url = url_header + "://" + base_url
     return domain_url
 
 
@@ -26,8 +26,7 @@ def is_xpath_selector(selector):
     """
     A basic method to determine if a selector is an xpath selector.
     """
-    if (selector.startswith('/') or selector.startswith('./') or (
-            selector.startswith('('))):
+    if selector.startswith("/") or selector.startswith("./") or (selector.startswith("(")):
         return True
     return False
 
@@ -36,8 +35,7 @@ def is_link_text_selector(selector):
     """
     A basic method to determine if a selector is a link text selector.
     """
-    if (selector.startswith('link=') or selector.startswith('link_text=') or (
-            selector.startswith('text='))):
+    if selector.startswith("link=") or selector.startswith("link_text=") or (selector.startswith("text=")):
         return True
     return False
 
@@ -46,9 +44,9 @@ def is_partial_link_text_selector(selector):
     """
     A basic method to determine if a selector is a partial link text selector.
     """
-    if (selector.startswith('partial_link=') or (
-            selector.startswith('partial_link_text=') or (
-            selector.startswith('partial_text=')))):
+    if selector.startswith("partial_link=") or (
+        selector.startswith("partial_link_text=") or (selector.startswith("partial_text="))
+    ):
         return True
     return False
 
@@ -57,7 +55,7 @@ def is_name_selector(selector):
     """
     A basic method to determine if a selector is a name selector.
     """
-    if selector.startswith('name='):
+    if selector.startswith("name="):
         return True
     return False
 
@@ -66,12 +64,12 @@ def get_link_text_from_selector(selector):
     """
     A basic method to get the link text from a link text selector.
     """
-    if selector.startswith('link='):
-        return selector.split('link=')[1]
-    elif selector.startswith('link_text='):
-        return selector.split('link_text=')[1]
-    elif selector.startswith('text='):
-        return selector.split('text=')[1]
+    if selector.startswith("link="):
+        return selector.split("link=")[1]
+    elif selector.startswith("link_text="):
+        return selector.split("link_text=")[1]
+    elif selector.startswith("text="):
+        return selector.split("text=")[1]
     return selector
 
 
@@ -79,12 +77,12 @@ def get_partial_link_text_from_selector(selector):
     """
     A basic method to get the partial link text from a partial link selector.
     """
-    if selector.startswith('partial_link='):
-        return selector.split('partial_link=')[1]
-    elif selector.startswith('partial_link_text='):
-        return selector.split('partial_link_text=')[1]
-    elif selector.startswith('partial_text='):
-        return selector.split('partial_text=')[1]
+    if selector.startswith("partial_link="):
+        return selector.split("partial_link=")[1]
+    elif selector.startswith("partial_link_text="):
+        return selector.split("partial_link_text=")[1]
+    elif selector.startswith("partial_text="):
+        return selector.split("partial_text=")[1]
     return selector
 
 
@@ -92,23 +90,26 @@ def get_name_from_selector(selector):
     """
     A basic method to get the name from a name selector.
     """
-    if selector.startswith('name='):
-        return selector.split('name=')[1]
+    if selector.startswith("name="):
+        return selector.split("name=")[1]
     return selector
 
 
 def is_valid_url(url):
     regex = re.compile(
-        r'^(?:http)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+'
-        r'(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-    if regex.match(url) or ((url.startswith('about:') or (
-            url.startswith('data:') or url.startswith('chrome:')))
-            and " " not in url):
+        r"^(?:http)s?://"  # http:// or https://
+        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+"
+        r"(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
+        r"localhost|"  # localhost...
+        r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # ...or ip
+        r"(?::\d+)?"  # optional port
+        r"(?:/?|[/?]\S+)$",
+        re.IGNORECASE,
+    )
+    if regex.match(url) or (
+        (url.startswith("about:") or (url.startswith("data:") or url.startswith("chrome:")))
+        and " " not in url
+    ):
         return True
     else:
         return False
@@ -120,38 +121,37 @@ def _get_unique_links(page_url, soup):
     Includes:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src" links.
     """
-    if not page_url.startswith("http://") and (
-            not page_url.startswith("https://")):
+    if not page_url.startswith("http://") and (not page_url.startswith("https://")):
         return []
-    prefix = 'http:'
-    if page_url.startswith('https:'):
-        prefix = 'https:'
-    simple_url = page_url.split('://')[1]
-    base_url = simple_url.split('/')[0]
+    prefix = "http:"
+    if page_url.startswith("https:"):
+        prefix = "https:"
+    simple_url = page_url.split("://")[1]
+    base_url = simple_url.split("/")[0]
     full_base_url = prefix + "//" + base_url
 
     raw_links = []
     raw_unique_links = []
 
     # Get "href" from all "a" tags
-    links = soup.find_all('a')
+    links = soup.find_all("a")
     for link in links:
-        raw_links.append(link.get('href'))
+        raw_links.append(link.get("href"))
 
     # Get "src" from all "img" tags
-    img_links = soup.find_all('img')
+    img_links = soup.find_all("img")
     for img_link in img_links:
-        raw_links.append(img_link.get('src'))
+        raw_links.append(img_link.get("src"))
 
     # Get "href" from all "link" tags
-    links = soup.find_all('link')
+    links = soup.find_all("link")
     for link in links:
-        raw_links.append(link.get('href'))
+        raw_links.append(link.get("href"))
 
     # Get "src" from all "script" tags
-    img_links = soup.find_all('script')
+    img_links = soup.find_all("script")
     for img_link in img_links:
-        raw_links.append(img_link.get('src'))
+        raw_links.append(img_link.get("src"))
 
     for link in raw_links:
         if link not in raw_unique_links:
@@ -160,15 +160,15 @@ def _get_unique_links(page_url, soup):
     unique_links = []
     for link in raw_unique_links:
         if link and len(link) > 1:
-            if link.startswith('//'):
+            if link.startswith("//"):
                 link = prefix + link
-            elif link.startswith('/'):
+            elif link.startswith("/"):
                 link = full_base_url + link
-            elif link.startswith('./'):
+            elif link.startswith("./"):
                 link = full_base_url + link[1:]
-            elif link.startswith('#'):
+            elif link.startswith("#"):
                 link = full_base_url + link
-            elif '//' not in link:
+            elif "//" not in link:
                 link = full_base_url + "/" + link
             else:
                 pass
@@ -185,8 +185,7 @@ def _get_link_status_code(link, allow_redirects=False, timeout=5):
     """
     status_code = None
     try:
-        response = requests.get(
-            link, allow_redirects=allow_redirects, timeout=timeout)
+        response = requests.get(link, allow_redirects=allow_redirects, timeout=timeout)
         status_code = response.status_code
     except Exception:
         status_code = 404
@@ -210,21 +209,21 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     if new_file_name:
         file_name = new_file_name
     else:
-        file_name = file_url.split('/')[-1]
+        file_name = file_url.split("/")[-1]
     r = requests.get(file_url)
-    with open(destination_folder + '/' + file_name, "wb") as code:
+    with open(destination_folder + "/" + file_name, "wb") as code:
         code.write(r.content)
 
 
 def _save_data_as(data, destination_folder, file_name):
-    out_file = codecs.open(destination_folder + '/' + file_name, "w+")
+    out_file = codecs.open(destination_folder + "/" + file_name, "w+")
     out_file.writelines(data)
     out_file.close()
 
 
 def make_css_match_first_element_only(selector):
     # Only get the first match
-    last_syllable = selector.split(' ')[-1]
-    if ':' not in last_syllable and ':contains' not in selector:
-        selector += ':first'
+    last_syllable = selector.split(" ")[-1]
+    if ":" not in last_syllable and ":contains" not in selector:
+        selector += ":first"
     return selector

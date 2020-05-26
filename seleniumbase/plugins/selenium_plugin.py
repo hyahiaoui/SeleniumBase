@@ -45,296 +45,379 @@ class SeleniumBrowser(Plugin):
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
-    name = 'selenium'  # Usage: --with-selenium
+
+    name = "selenium"  # Usage: --with-selenium
 
     def options(self, parser, env):
         super(SeleniumBrowser, self).options(parser, env=env)
 
         parser.add_option(
-            '--browser',
-            action='store',
-            dest='browser',
+            "--browser",
+            action="store",
+            dest="browser",
             choices=constants.ValidBrowsers.valid_browsers,
             default=constants.Browser.GOOGLE_CHROME,
             help="""Specifies the web browser to use. Default: Chrome.
                     If you want to use Firefox, explicitly indicate that.
-                    Example: (--browser=firefox)""")
+                    Example: (--browser=firefox)""",
+        )
         parser.add_option(
-            '--browser_version', '--browser-version',
-            action='store',
-            dest='browser_version',
+            "--browser_version",
+            "--browser-version",
+            action="store",
+            dest="browser_version",
             default="latest",
             help="""The browser version to use. Explicitly select
-                    a version number or use "latest".""")
+                    a version number or use "latest".""",
+        )
         parser.add_option(
-            '--cap_file', '--cap-file',
-            action='store',
-            dest='cap_file',
+            "--cap_file",
+            "--cap-file",
+            action="store",
+            dest="cap_file",
             default=None,
             help="""The file that stores browser desired capabilities
-                    for BrowserStack or Sauce Labs web drivers.""")
+                    for BrowserStack or Sauce Labs web drivers.""",
+        )
         parser.add_option(
-            '--cap_string', '--cap-string',
-            dest='cap_string',
+            "--cap_string",
+            "--cap-string",
+            dest="cap_string",
             default=None,
             help="""The string that stores browser desired
                     capabilities for BrowserStack, Sauce Labs,
                     and other remote web drivers to use.
                     Enclose cap-string in single quotes.
                     Enclose parameter keys in double quotes.
-                    Example: --cap-string='{"name":"test1","v":"42"}'""")
+                    Example: --cap-string='{"name":"test1","v":"42"}'""",
+        )
         parser.add_option(
-            '--user_data_dir', '--user-data-dir',
-            action='store',
-            dest='user_data_dir',
+            "--user_data_dir",
+            "--user-data-dir",
+            action="store",
+            dest="user_data_dir",
             default=None,
             help="""The Chrome User Data Directory to use. (Chrome Profile)
-                    If the directory doesn't exist, it'll be created.""")
+                    If the directory doesn't exist, it'll be created.""",
+        )
         parser.add_option(
-            '--server',
-            action='store',
-            dest='servername',
-            default='localhost',
+            "--server",
+            action="store",
+            dest="servername",
+            default="localhost",
             help="""Designates the Selenium Grid server to use.
                     Use "127.0.0.1" to connect to a localhost Grid.
                     If unset or set to "localhost", Grid isn't used.
-                    Default: "localhost".""")
+                    Default: "localhost".""",
+        )
         parser.add_option(
-            '--port',
-            action='store',
-            dest='port',
-            default='4444',
+            "--port",
+            action="store",
+            dest="port",
+            default="4444",
             help="""Designates the Selenium Grid port to use.
-                    Default: 4444.""")
+                    Default: 4444.""",
+        )
         parser.add_option(
-            '--proxy',
-            action='store',
-            dest='proxy_string',
+            "--proxy",
+            action="store",
+            dest="proxy_string",
             default=None,
             help="""Designates the proxy server:port to use.
                     Format: servername:port.  OR
                             username:password@servername:port  OR
                             A dict key from proxy_list.PROXY_LIST
-                    Default: None.""")
+                    Default: None.""",
+        )
         parser.add_option(
-            '--agent', '--user-agent', '--user_agent',
-            action='store',
-            dest='user_agent',
+            "--agent",
+            "--user-agent",
+            "--user_agent",
+            action="store",
+            dest="user_agent",
             default=None,
             help="""Designates the User-Agent for the browser to use.
                     Format: A string.
-                    Default: None.""")
+                    Default: None.""",
+        )
         parser.add_option(
-            '--mobile', '--mobile-emulator', '--mobile_emulator',
+            "--mobile",
+            "--mobile-emulator",
+            "--mobile_emulator",
             action="store_true",
-            dest='mobile_emulator',
+            dest="mobile_emulator",
             default=False,
             help="""If this option is enabled, the mobile emulator
-                    will be used while running tests.""")
+                    will be used while running tests.""",
+        )
         parser.add_option(
-            '--metrics', '--device-metrics', '--device_metrics',
-            action='store',
-            dest='device_metrics',
+            "--metrics",
+            "--device-metrics",
+            "--device_metrics",
+            action="store",
+            dest="device_metrics",
             default=None,
             help="""Designates the three device metrics of the mobile
                     emulator: CSS Width, CSS Height, and Pixel-Ratio.
                     Format: A comma-separated string with the 3 values.
                     Example: "375,734,3"
-                    Default: None. (Will use default values if None)""")
+                    Default: None. (Will use default values if None)""",
+        )
         parser.add_option(
-            '--extension_zip', '--extension-zip',
-            action='store',
-            dest='extension_zip',
+            "--extension_zip",
+            "--extension-zip",
+            action="store",
+            dest="extension_zip",
             default=None,
             help="""Designates the Chrome Extension ZIP file to load.
                     Format: A comma-separated list of .zip or .crx files
                     containing the Chrome extensions to load.
-                    Default: None.""")
+                    Default: None.""",
+        )
         parser.add_option(
-            '--extension_dir', '--extension-dir',
-            action='store',
-            dest='extension_dir',
+            "--extension_dir",
+            "--extension-dir",
+            action="store",
+            dest="extension_dir",
             default=None,
             help="""Designates the Chrome Extension folder to load.
                     Format: A directory containing the Chrome extension.
                     (Can also be a comma-separated list of directories.)
-                    Default: None.""")
+                    Default: None.""",
+        )
         parser.add_option(
-            '--headless',
+            "--headless",
             action="store_true",
-            dest='headless',
+            dest="headless",
             default=False,
             help="""Using this makes Webdriver run web browsers headlessly,
                     which is required on headless machines.
-                    Default: False on Mac/Windows. True on Linux.""")
+                    Default: False on Mac/Windows. True on Linux.""",
+        )
         parser.add_option(
-            '--headed', '--gui',
+            "--headed",
+            "--gui",
             action="store_true",
-            dest='headed',
+            dest="headed",
             default=False,
             help="""Using this makes Webdriver run web browsers with
                     a GUI when running tests on Linux machines.
                     (The default setting on Linux is headless.)
-                    (The default setting on Mac or Windows is headed.)""")
+                    (The default setting on Mac or Windows is headed.)""",
+        )
         parser.add_option(
-            '--start_page', '--start-page', '--url',
-            action='store',
-            dest='start_page',
+            "--start_page",
+            "--start-page",
+            "--url",
+            action="store",
+            dest="start_page",
             default=None,
             help="""Designates the starting URL for the web browser
                     when each test begins.
-                    Default: None.""")
+                    Default: None.""",
+        )
         parser.add_option(
-            '--time_limit', '--time-limit', '--timelimit',
-            action='store',
-            dest='time_limit',
+            "--time_limit",
+            "--time-limit",
+            "--timelimit",
+            action="store",
+            dest="time_limit",
             default=None,
             help="""Use this to set a time limit per test, in seconds.
-                    If a test runs beyond the limit, it fails.""")
+                    If a test runs beyond the limit, it fails.""",
+        )
         parser.add_option(
-            '--slow_mode', '--slow-mode', '--slow',
+            "--slow_mode",
+            "--slow-mode",
+            "--slow",
             action="store_true",
-            dest='slow_mode',
+            dest="slow_mode",
             default=False,
-            help="""Using this slows down the automation.""")
+            help="""Using this slows down the automation.""",
+        )
         parser.add_option(
-            '--demo_mode', '--demo-mode', '--demo',
+            "--demo_mode",
+            "--demo-mode",
+            "--demo",
             action="store_true",
-            dest='demo_mode',
+            dest="demo_mode",
             default=False,
             help="""Using this slows down the automation and lets you
-                    visually see what the tests are actually doing.""")
+                    visually see what the tests are actually doing.""",
+        )
         parser.add_option(
-            '--demo_sleep', '--demo-sleep',
-            action='store',
-            dest='demo_sleep',
+            "--demo_sleep",
+            "--demo-sleep",
+            action="store",
+            dest="demo_sleep",
             default=None,
             help="""Setting this overrides the Demo Mode sleep
-                    time that happens after browser actions.""")
+                    time that happens after browser actions.""",
+        )
         parser.add_option(
-            '--highlights',
-            action='store',
-            dest='highlights',
+            "--highlights",
+            action="store",
+            dest="highlights",
             default=None,
             help="""Setting this overrides the default number of
-                    highlight animation loops to have per call.""")
+                    highlight animation loops to have per call.""",
+        )
         parser.add_option(
-            '--message_duration', '--message-duration',
+            "--message_duration",
+            "--message-duration",
             action="store",
-            dest='message_duration',
+            dest="message_duration",
             default=None,
             help="""Setting this overrides the default time that
                     messenger notifications remain visible when reaching
-                    assert statements during Demo Mode.""")
+                    assert statements during Demo Mode.""",
+        )
         parser.add_option(
-            '--check_js', '--check-js',
+            "--check_js",
+            "--check-js",
             action="store_true",
-            dest='js_checking_on',
+            dest="js_checking_on",
             default=False,
             help="""The option to check for JavaScript errors after
-                    every page load.""")
+                    every page load.""",
+        )
         parser.add_option(
-            '--ad_block', '--ad-block', '--block_ads', '--block-ads',
+            "--ad_block",
+            "--ad-block",
+            "--block_ads",
+            "--block-ads",
             action="store_true",
-            dest='ad_block_on',
+            dest="ad_block_on",
             default=False,
             help="""Using this makes WebDriver block display ads
-                    that are defined in ad_block_list.AD_BLOCK_LIST.""")
+                    that are defined in ad_block_list.AD_BLOCK_LIST.""",
+        )
         parser.add_option(
-            '--verify_delay', '--verify-delay',
-            action='store',
-            dest='verify_delay',
+            "--verify_delay",
+            "--verify-delay",
+            action="store",
+            dest="verify_delay",
             default=None,
             help="""Setting this overrides the default wait time
-                    before each MasterQA verification pop-up.""")
+                    before each MasterQA verification pop-up.""",
+        )
         parser.add_option(
-            '--disable_csp', '--disable-csp',
+            "--disable_csp",
+            "--disable-csp",
             action="store_true",
-            dest='disable_csp',
+            dest="disable_csp",
             default=False,
             help="""Using this disables the Content Security Policy of
                     websites, which may interfere with some features of
                     SeleniumBase, such as loading custom JavaScript
                     libraries for various testing actions.
                     Setting this to True (--disable_csp) overrides the
-                    value set in seleniumbase/config/settings.py""")
+                    value set in seleniumbase/config/settings.py""",
+        )
         parser.add_option(
-            '--enable_sync', '--enable-sync',
+            "--enable_sync",
+            "--enable-sync",
             action="store_true",
-            dest='enable_sync',
+            dest="enable_sync",
             default=False,
-            help="""Using this enables the "Chrome Sync" feature.""")
+            help="""Using this enables the "Chrome Sync" feature.""",
+        )
         parser.add_option(
-            '--use_auto_ext', '--use-auto-ext', '--auto-ext',
+            "--use_auto_ext",
+            "--use-auto-ext",
+            "--auto-ext",
             action="store_true",
-            dest='use_auto_ext',
+            dest="use_auto_ext",
             default=False,
             help="""Using this enables Chrome's Automation Extension.
                     It's not required, but some commands & advanced
-                    features may need it.""")
+                    features may need it.""",
+        )
         parser.add_option(
-            '--no_sandbox', '--no-sandbox',
+            "--no_sandbox",
+            "--no-sandbox",
             action="store_true",
-            dest='no_sandbox',
+            dest="no_sandbox",
             default=False,
             help="""Using this enables the "No Sandbox" feature.
-                    (This setting is now always enabled by default.)""")
+                    (This setting is now always enabled by default.)""",
+        )
         parser.add_option(
-            '--disable_gpu', '--disable-gpu',
+            "--disable_gpu",
+            "--disable-gpu",
             action="store_true",
-            dest='disable_gpu',
+            dest="disable_gpu",
             default=False,
             help="""Using this enables the "Disable GPU" feature.
-                    (This setting is now always enabled by default.)""")
+                    (This setting is now always enabled by default.)""",
+        )
         parser.add_option(
-            '--incognito', '--incognito_mode', '--incognito-mode',
+            "--incognito",
+            "--incognito_mode",
+            "--incognito-mode",
             action="store_true",
-            dest='incognito',
+            dest="incognito",
             default=False,
-            help="""Using this enables Chrome's Incognito mode.""")
+            help="""Using this enables Chrome's Incognito mode.""",
+        )
         parser.add_option(
-            '--guest', '--guest_mode', '--guest-mode',
+            "--guest",
+            "--guest_mode",
+            "--guest-mode",
             action="store_true",
-            dest='guest_mode',
+            dest="guest_mode",
             default=False,
-            help="""Using this enables Chrome's Guest mode.""")
+            help="""Using this enables Chrome's Guest mode.""",
+        )
         parser.add_option(
-            '--devtools', '--open_devtools', '--open-devtools',
+            "--devtools",
+            "--open_devtools",
+            "--open-devtools",
             action="store_true",
-            dest='devtools',
+            dest="devtools",
             default=False,
-            help="""Using this opens Chrome's DevTools.""")
+            help="""Using this opens Chrome's DevTools.""",
+        )
         parser.add_option(
-            '--maximize_window', '--maximize-window', '--maximize',
-            '--fullscreen',
+            "--maximize_window",
+            "--maximize-window",
+            "--maximize",
+            "--fullscreen",
             action="store_true",
-            dest='maximize_option',
+            dest="maximize_option",
             default=False,
-            help="""The option to start with the web browser maximized.""")
+            help="""The option to start with the web browser maximized.""",
+        )
         parser.add_option(
-            '--save_screenshot', '--save-screenshot',
+            "--save_screenshot",
+            "--save-screenshot",
             action="store_true",
-            dest='save_screenshot',
+            dest="save_screenshot",
             default=False,
             help="""Take a screenshot on last page after the last step
-                    of the test. (Added to the "latest_logs" folder.)""")
+                    of the test. (Added to the "latest_logs" folder.)""",
+        )
         parser.add_option(
-            '--visual_baseline', '--visual-baseline',
-            action='store_true',
-            dest='visual_baseline',
+            "--visual_baseline",
+            "--visual-baseline",
+            action="store_true",
+            dest="visual_baseline",
             default=False,
             help="""Setting this resets the visual baseline for
                     Automated Visual Testing with SeleniumBase.
                     When a test calls self.check_window(), it will
-                    rebuild its files in the visual_baseline folder.""")
+                    rebuild its files in the visual_baseline folder.""",
+        )
         parser.add_option(
-            '--timeout_multiplier', '--timeout-multiplier',
-            action='store',
-            dest='timeout_multiplier',
+            "--timeout_multiplier",
+            "--timeout-multiplier",
+            action="store",
+            dest="timeout_multiplier",
             default=None,
             help="""Setting this overrides the default timeout
                     by the multiplier when waiting for page elements.
-                    Unused when tests overide the default value.""")
+                    Unused when tests overide the default value.""",
+        )
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -385,11 +468,8 @@ class SeleniumBrowser(Plugin):
         if test.test.servername != "localhost":
             # Use Selenium Grid (Use --server="127.0.0.1" for localhost Grid)
             test.test.use_grid = True
-        if "linux" in sys.platform and (
-                not self.options.headed and not self.options.headless):
-            print(
-                "(Running with --headless on Linux. "
-                "Use --headed or --gui to override.)")
+        if "linux" in sys.platform and (not self.options.headed and not self.options.headless):
+            print("(Running with --headless on Linux. " "Use --headed or --gui to override.)")
             self.options.headless = True
             test.test.headless = True
         if not self.options.headless:
@@ -399,6 +479,7 @@ class SeleniumBrowser(Plugin):
             try:
                 # from pyvirtualdisplay import Display  # Skip for own lib
                 from seleniumbase.virtual_display.display import Display
+
                 self.display = Display(visible=0, size=(1440, 1880))
                 self.display.start()
                 self.headless_active = True

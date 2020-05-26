@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_basic(self):
         self.open("https://xkcd.com/353/")
         self.click('a[rel="license"]')

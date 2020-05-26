@@ -7,7 +7,6 @@ from seleniumbase import BaseCase
 
 
 class HackingTest(BaseCase):
-
     def test_hack_search(self):
         self.open("https://google.com/ncr")
         self.assert_element('input[title="Search"]')
@@ -20,4 +19,4 @@ class HackingTest(BaseCase):
         self.assert_element('[href="/seleniumbase/SeleniumBase"]')
         self.assert_true("seleniumbase/SeleniumBase" in self.get_current_url())
         self.click('[title="examples"]')
-        self.assert_text('examples', 'strong.final-path')
+        self.assert_text("examples", "strong.final-path")

@@ -14,14 +14,15 @@ class S3LoggingBucket(object):
     Those files can then be shared easily.
     """
 
-    def __init__(self,
-                 log_bucket=settings.S3_LOG_BUCKET,
-                 bucket_url=settings.S3_BUCKET_URL,
-                 selenium_access_key=settings.S3_SELENIUM_ACCESS_KEY,
-                 selenium_secret_key=settings.S3_SELENIUM_SECRET_KEY):
+    def __init__(
+        self,
+        log_bucket=settings.S3_LOG_BUCKET,
+        bucket_url=settings.S3_BUCKET_URL,
+        selenium_access_key=settings.S3_SELENIUM_ACCESS_KEY,
+        selenium_secret_key=settings.S3_SELENIUM_SECRET_KEY,
+    ):
 
-        self.conn = S3Connection(selenium_access_key,
-                                 selenium_secret_key)
+        self.conn = S3Connection(selenium_access_key, selenium_secret_key)
         self.bucket = self.conn.get_bucket(log_bucket)
         self.bucket_url = bucket_url
 
@@ -44,11 +45,8 @@ class S3LoggingBucket(object):
             content_type = "image/jpeg"
         elif file_name.endswith(".png"):
             content_type = "image/png"
-        upload_key.set_contents_from_filename(
-            file_path,
-            headers={"Content-Type": content_type})
-        upload_key.url = \
-            upload_key.generate_url(expires_in=3600).split("?")[0]
+        upload_key.set_contents_from_filename(file_path, headers={"Content-Type": content_type})
+        upload_key.url = upload_key.generate_url(expires_in=3600).split("?")[0]
         try:
             upload_key.make_public()
         except Exception:
@@ -64,11 +62,10 @@ class S3LoggingBucket(object):
         index = self.get_key(file_name)
         index_str = []
         for completed_file in already_uploaded_files:
-            index_str.append("<a href='" + self.bucket_url + ""
-                             "%s'>%s</a>" % (completed_file, completed_file))
-        index.set_contents_from_string(
-            "<br>".join(index_str),
-            headers={"Content-Type": "text/html"})
+            index_str.append(
+                "<a href='" + self.bucket_url + "" "%s'>%s</a>" % (completed_file, completed_file)
+            )
+        index.set_contents_from_string("<br>".join(index_str), headers={"Content-Type": "text/html"})
         index.make_public()
         return "%s%s" % (self.bucket_url, file_name)
 

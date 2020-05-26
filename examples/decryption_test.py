@@ -8,7 +8,6 @@ from seleniumbase import encryption
 
 
 class MyTestClass(BaseCase):
-
     def test_rate_limited_printing(self):
         self.open("https://www.saucedemo.com/")
         self.update_text("#user-name", "standard_user")

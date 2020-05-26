@@ -4,7 +4,6 @@ from seleniumbase import BaseCase
 
 
 class SwagLabsTests(BaseCase):
-
     def login(self, username="standard_user"):
         """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
@@ -16,10 +15,9 @@ class SwagLabsTests(BaseCase):
         self.assert_element("#inventory_container")
         self.assert_text("Products", "div.product_label")
 
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
+    @parameterized.expand(
+        [["standard_user"], ["problem_user"],]
+    )
     @pytest.mark.run(order=1)
     def test_swag_labs_basic_functional_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
@@ -79,10 +77,9 @@ class SwagLabsTests(BaseCase):
         self.click(continue_shopping_button)
         self.assert_element_absent("span.shopping_cart_badge")
 
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
+    @parameterized.expand(
+        [["standard_user"], ["problem_user"],]
+    )
     @pytest.mark.run(order=2)
     def test_swag_labs_products_page_resource_verification(self, username):
         """ This test checks for 404 errors on the Swag Labs products page.

@@ -1,11 +1,13 @@
-title = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
+title = """<meta id="OGTitle" property="og:title" content="SeleniumBase">
         <title>Test Report</title>
         <link rel="SHORTCUT ICON"
-        href="%s" /> ''' % (
-        "https://raw.githubusercontent.com/seleniumbase/SeleniumBase"
-        "/master/seleniumbase/resources/favicon.ico")
+        href="%s" /> """ % (
+    "https://raw.githubusercontent.com/seleniumbase/SeleniumBase" "/master/seleniumbase/resources/favicon.ico"
+)
 
-style = title + '''<style type="text/css">
+style = (
+    title
+    + """<style type="text/css">
         html {
             background-color: #9988ad;
         }
@@ -95,11 +97,11 @@ style = title + '''<style type="text/css">
             padding-right: 10px;
             padding-left: 20px;
         }
-        </style>'''
+        </style>"""
+)
 
 # Bootstrap Tour Backdrop Style
-bt_backdrop_style = (
-    '''
+bt_backdrop_style = """
     .tour-tour-element {
         box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
         pointer-events: none !important;
@@ -114,37 +116,33 @@ bt_backdrop_style = (
         pointer-events: auto;
         z-index: 9999;
     }
-    ''')
+    """
 
-messenger_style = (
-    '''
+messenger_style = """
     .messenger-message-inner {
         font-family: "Proxima Nova","proxima-nova",Arial,sans-serif !important;
         font-size: 17px;
     }
-    ''')
+    """
 
-sh_style_test = (
-    '''
+sh_style_test = """
     var test_tour = new Shepherd.Tour({
       defaults: {
         classes: 'shepherd-theme-dark',
         scrollTo: true
       }
     });
-    ''')
+    """
 
 # Hopscotch Backdrop Style
-hops_backdrop_style = (
-    '''
+hops_backdrop_style = """
     .hopscotch-bubble-container {
         font-size: 110%;
     }
-    ''')
+    """
 
 # Shepherd Backdrop Style
-sh_backdrop_style = (
-    '''
+sh_backdrop_style = """
     body.shepherd-active .shepherd-target.shepherd-enabled {
         box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
         pointer-events: none !important;
@@ -175,4 +173,4 @@ sh_backdrop_style = (
     body.shepherd-active {
         pointer-events: none !important;
     }
-    ''')
+    """

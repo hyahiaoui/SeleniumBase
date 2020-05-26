@@ -2,9 +2,8 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_user_agent(self):
-        self.open('https://www.whatsmyua.info/')
+        self.open("https://www.whatsmyua.info/")
         user_agent = self.get_text("#custom-ua-string")
         print("\n\nUser-Agent = %s\n" % user_agent)
         print("Displaying User-Agent Info:")

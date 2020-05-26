@@ -7,7 +7,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     @pytest.mark.expected_failure
     def test_time_limit_feature(self):
         self.set_time_limit(6)  # Test fails if run-time exceeds limit

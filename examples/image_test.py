@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class ImageTest(BaseCase):
-
     def test_pull_image_from_website(self):
         self.open("https://xkcd.com/1117/")
         selector = "#comic"

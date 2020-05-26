@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
-
     def 열기(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -376,7 +375,6 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
-
     def 확인(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "수동 검사"

@@ -10,7 +10,6 @@ from seleniumbase import BaseCase
 
 
 class SkypeWebsiteTestClass(BaseCase):
-
     def test_skype_website_on_mobile(self):
         if not self.mobile_emulator:
             print("\n  This test is only for mobile devices / emulators!")
